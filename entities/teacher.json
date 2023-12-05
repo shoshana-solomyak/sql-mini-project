@@ -1,1 +1,1 @@
-{"column1":"id","column2":"name","column3":"password","column4":"email"}
+{"id":"INT", "name":"VARCHAR(255)", "password":"VARCHAR(255)", "email":"VARCHAR(255)"}
