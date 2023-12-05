@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const path = require('path')
 
-const tables = ['school.json', 'student.json', 'teacher.json', 'admin.json', 'classroom.json'];
+const tables = ['school.json', 'teacher.json', 'classroom.json', 'admin.json', 'student.json'];
 
 const con = mysql.createConnection({
     host: "localhost",
@@ -13,7 +13,7 @@ const con = mysql.createConnection({
     database: "schoolData"
 });
 
-con.connect(function(err) {
+con.connect(async function(err) {
     if (err) throw err;
     console.log("Connected!");
     // createTable('teacher.json')
@@ -29,14 +29,12 @@ function createTable (tableObj) {
         if(err) {
             console.log("error:" + err);
         }
-        console.log("data:" + data);
+        // console.log("data:" + data);
         tableToCreate = await JSON.parse(data);
         let columns = '';
         
         for (let column in tableToCreate) {
-        if(column == 'id') {
-            columns += `${column} ${tableToCreate[column]} PRIMARY KEY AUTO_INCREMENT, `
-        } else if(Object.keys(tableToCreate)[Object.keys(tableToCreate).length - 1] == column) {
+        if(Object.keys(tableToCreate)[Object.keys(tableToCreate).length - 1] == column) {
             columns += `${column} ${tableToCreate[column]}`
         }
         else {
@@ -44,19 +42,37 @@ function createTable (tableObj) {
         }
     }
     
-    console.log('COLUMNS:'+columns)
+    console.log('COLUMNS:', columns)
 
     const tableName = tableObj.split('.')[0];
     
     con.query(`DROP TABLE IF EXISTS ${tableName}`, function (err) {
         if (err) throw err;
-    })
+    })       
+
+    // await executeQuery(`CREATE TABLE ${tableName} (${columns})`)
+
     con.query(`CREATE TABLE ${tableName} (${columns})`, function (err) {
         if (err) throw err;
-        console.log("Table created");
+        console.log("Table created", tableName);
     });
+
+
 })
 }
+
+// function executeQuery(sql, values=[]){
+//     return new Promise((resolve, reject)=>{
+//         con.query(sql,values, function (err, result) {
+//             if (err) throw err;
+//             else {
+//                 resolve(result);
+//                 console.log("Table created");
+//             }
+//         });
+//     })
+
+// }
 
 
 

@@ -1,1 +1,1 @@
-{"id":"INT", "name":"VARCHAR(255)", "password":"VARCHAR(255)", "school_id":"INT"}
+{"id":"INT PRIMARY KEY AUTO_INCREMENT", "name":"VARCHAR(255)", "password":"VARCHAR(255)", "school_id":"INT"}

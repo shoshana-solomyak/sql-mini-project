@@ -1,1 +1,1 @@
-{"id":"INT", "grade":"INT", "grade_index":"VARCHAR(255)", "teacher_id":"INT"}
+{"id":"INT PRIMARY KEY AUTO_INCREMENT", "grade":"INT", "grade_index":"VARCHAR(255)", "teacher_id":"INT"}

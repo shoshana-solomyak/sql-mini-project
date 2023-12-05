@@ -32,13 +32,10 @@ con.connect(function (err) {
 //     console.log("admin inserted");
 //   }
 // );
+app.use(express.json());
 
 // add school data to tables
 
-function checkIfAdmin(userId) {
-  con.query(`SELECT `);
-}
-app.use(express.json());
 
 app.post(`/createSchool`, (req, res) => {
   const name = req.body.name;
@@ -114,6 +111,34 @@ app.post(`/addClassroom`, (req, res) => {
     }
   );
 });
+
+app.get('/students', (re, res) => {
+    con.query('SELECT * FROM student', function (err, result) {
+        if(err) throw err;
+        console.log(result);
+        res.send(result);
+    })
+})
+
+app.get('/schools/admins', (re, res) => {
+    con.query('SELECT admin.name AS admin_name, school.name AS school_name FROM admin JOIN school ON admin.school_id = school.id', function (err, result) {
+        if(err) throw err;
+        console.log(result);
+        res.send(result);
+    })
+})
+
+app.get('/:grade/:index/students', (req, res) => {
+    const grade = req.params.grade;
+    const index = req.params.index;
+
+    con.query(`SELECT student.name AS student_name FROM student JOIN classroom ON student.classroom_id = classroom.id WHERE classroom.grade = "${grade}" and classroom.grade_index = "${index}"`, function (err, result) {
+        if(err) throw err;
+        console.log(result);
+        res.send(result);
+    })
+})
+
 
 app.listen(8080, () => {
   console.log(`listening on port 8080`);
